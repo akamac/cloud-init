@@ -95,12 +95,14 @@ Currently the only supported config source is cloud-config.json file stored on c
 
 How to install and enable to run on startup:
 ```
-pip install git+https://github.com/akamac/cloud-init.git
+sudo -H pip3 install git+https://github.com/akamac/cloud-init.git
 cd /etc/systemd/system/
 wget https://github.com/akamac/cloud-init/raw/master/cloudinit/cloud-init.service
 systemctl daemon-reload
 systemctl enable cloud-init
 ```
+
+Put unencrypted private RSA key (private.pem) to /var/lib/cloud-init so that cloud-init can decrypt user passwords, supplied via cloud-config.json  
 
 Script logs are available via:
 `journalctl -u cloud-init.service`
@@ -111,8 +113,6 @@ Few things to know:
 - disk plugin supports only ext4 filesystem at the moment
 - json used for configuration is saved locally and can be checked at `/var/lib/cloud-init/_cloud-config.json` (passwords are cleared)
 
-/var/lib/cloud-init/ contains private RSA key (private.pem) used to decrypt user passwords, supplied via cloud-config.json
-
 The module targets Debian-based installations and has been tested on:
 - Debian 8 Jessie
 - Ubuntu 16.04 LTS Xenial
@@ -122,10 +122,29 @@ The module targets Debian-based installations and has been tested on:
 To develop a new plugin create Python 3 scripts, prepend the name with double-digit number according 
 to the order when the plugin is intended to be run and put it into the *plugins* folder. 
 `cloud_config` dict variable is exposed to your script with parsed content of cloud-config.json.
-Also you can use bundled `from .tools import run` function to execute arbitrary bash commands.
+Also you can use bundled `from tools import run` function to execute arbitrary bash commands.
 
 If you need to restart system after plugin execution, set `reboot = True` before exiting the script,
 so the module can suspend execution of the next plugin
 and resume after system has been restarted. To handle reboots the module keeps
 a *state* file in `/var/lib/cloud-init/` directory where it stores a current execution step.
 To reset the state run `cloud-init --set-state 0`
+
+## openssl rsautl
+### generate rsa key pair
+`openssl genrsa -out keypair.pem -aes128 4096`  
+
+### export public key
+`openssl rsa -in keypair.pem -outform PEM -pubout -out public.pem`  
+
+### export unencrypted private key (to be stored in a template)
+`openssl rsa -in keypair.pem -out private.pem -outform PEM`  
+
+### encrypt data
+#### windows
+`New-Password | cmd '/c openssl rsautl -inkey public.pem -pubin -encrypt | openssl enc -base64'`  
+#### linux
+`echo 'password' | openssl rsautl -inkey public.pem -pubin -encrypt | openssl enc -base64 > encrypted`  
+
+### decrypt data
+`cat encrypted | openssl enc -d -base64 | openssl rsautl -inkey private.pem -decrypt`  

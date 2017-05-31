@@ -21,7 +21,7 @@ def main():
     parser.add_argument('--set-state', type=int, help='set current execution step')
     args = parser.parse_args()
 
-    if args.__contains__('set_state'):
+    if args.set_state is not None:
         with open(state_path, 'w') as state:
             state.write(args.set_state)
         return

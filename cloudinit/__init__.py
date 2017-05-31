@@ -1,1 +1,1 @@
-from .cloudinit import *
+from cloudinit import *
