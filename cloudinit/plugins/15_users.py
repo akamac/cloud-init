@@ -18,18 +18,18 @@ for user in cloud_config.get('Users'):
             groupadd_cmd = 'groupadd '
             if user.get('System'):
                 groupadd_cmd += '--system '
-            print('Creating missing group: ' + group)
+            print('Creating missing group: {}'.format(group))
             run(groupadd_cmd + group, fail=True)
 
-    if user not in users:
+    if user['Name'] not in users:
         adduser_cmd = 'adduser --disabled-password --gecos "" '
         if user.get('System'):
             adduser_cmd += '--system '
-        print('Creating user ' + user['Name'])
+        print('Creating user {}'.format(user['Name']))
         run(adduser_cmd + user['Name'], fail=True)
 
     for group in user.get('Groups'):
-        print('Adding user to group ' + group)
+        print('Adding user to group {}'.format(group))
         run('adduser {} {}'.format(user['Name'], group))
 
     if user.get('Password'):

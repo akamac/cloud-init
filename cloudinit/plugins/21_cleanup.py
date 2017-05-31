@@ -6,6 +6,7 @@ import glob
 
 
 if cloud_config.get('Cleanup'):
+    print('Cleaning up bash history and temp files')
     os.remove('/root/.bash_history')
     map(os.remove, glob.glob('/root/.ssh/*'))
     map(os.remove, glob.glob('/tmp/*'))

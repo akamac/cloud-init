@@ -71,25 +71,27 @@ def main():
 
     print('Running plugins')
     plugins_dir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'plugins')
+    sys.path.insert(0, plugins_dir)
     plugins = glob(plugins_dir + '/[0-9][0-9]_[a-z]*.py')
     for plugin in sorted(plugins):
-        plugin_name = os.path.basename(plugin).rstrip('.py')
+        plugin_name = os.path.basename(plugin)[:-3]
         plugin_order = int(plugin_name.split('_')[0])
         if plugin_order > state:
             try:
-                print('Running ' + plugin_name)
+                print('Running {} plugin'.format(plugin_name))
                 res = runpy.run_path(plugin, init_globals={'cloud_config': cloud_config,
                                                            'WORKING_DIR': WORKING_DIR})
             except:
                 sys.exit('Error occured while running plugin {}'.format(plugin_name))
 
             with open(state_path, 'w') as f:
-                f.write(plugin_order)
-            if res['reboot']:
+                f.write(str(plugin_order))
+            if res.get('reboot'):
                 print('Plugin {} requested reboot'.format(plugin_name))
                 run('systemctl reboot --message="cloud-init restart"')
                 sys.exit()
 
+    sys.path.remove(plugins_dir)
     print('Disabling cloud-init')
     run('systemctl disable cloud-init')
 

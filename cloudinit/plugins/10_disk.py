@@ -25,7 +25,7 @@ for vm_disk, config_disk in zip(vm_disks, config_disks):
     if glob.glob('/sys/class/scsi_disk/{0}/device/block/{1}/{1}*'.format(*vm_disk)):
         print('Disk {} contains partitions. Skipping..'.format(config_disk['DeviceNode']))
     else:
-        print('Creating partition on /dev/' + device)
+        print('Creating partition on /dev/{}'.format(device))
         run('parted --script /dev/{} mklabel gpt mkpart primary 2048KiB 100%'.format(device), fail=True)
 
         file_system = config_disk['FileSystem'] if config_disk.get('FileSystem') else DEFAULT_FILE_SYSTEM
@@ -47,5 +47,5 @@ for vm_disk, config_disk in zip(vm_disks, config_disks):
         with open('/etc/fstab', 'a') as fstab:
             fstab.write('\nLABEL={0}  {1}  {2}  defaults  0  0\n'.format(label, config_disk['MountPoint'], file_system))
 
-        print('Mount ' + label)
+        print('Mount {}'.format(label))
         run('mount -a', fail=True)

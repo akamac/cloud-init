@@ -13,7 +13,7 @@ old_fqdn = os.uname().nodename
 old_hostname = old_fqdn.split('.')[0]
 
 if fqdn != old_fqdn:
-    print('Setting fqdn ' + fqdn)
+    print('Setting fqdn {}'.format(fqdn))
     run('hostnamectl set-hostname ' + fqdn)
     print('Updating /etc/hosts')
     with open('/etc/hosts') as f:

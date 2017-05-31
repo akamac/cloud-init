@@ -26,7 +26,7 @@ main_ip = True
 for nic in cloud_config['NIC']:
     try:
         name = interfaces[nic['Mac'].lower()]
-        nic_config = '\nauto {}'.format(name)
+        nic_config = '\n\nauto {}'.format(name)
         for ip in nic['Ip']:
             interface = ipaddress.ip_interface(ip)
             nic_config += '''
@@ -38,7 +38,7 @@ iface {name} inet static
                                # network=interface.network.network_address,
                                # broadcast=interface.network.broadcast_address)
 
-            if nic['Gw'] and main_ip:
+            if nic.get('Gw') and main_ip:
                 main_ip = False
                 nic_config += '''
     gateway {gw}
@@ -60,7 +60,7 @@ iface {name} inet static
 
         content += nic_config
     except KeyError:
-        pass
+        print('No NIC with MAC {}. Skipping..'.format(nic['Mac']))
 
 print('Updating /etc/network/interfaces')
 with open('/etc/network/interfaces', 'w') as f:
