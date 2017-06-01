@@ -34,7 +34,8 @@ for user in cloud_config.get('Users'):
 
     if user.get('Password'):
         print('Setting password')
-        encrypted = base64.b64decode('\n'.join(user['Password']))
+        submitted_password = ''.join(user['Password']) if isinstance(user['Password'], list) else user['Password']
+        encrypted = base64.b64decode(submitted_password)
         openssl_decrypt = run('openssl rsautl -inkey {}/private.pem -decrypt'.format(WORKING_DIR), stdin=encrypted, suppress_output=True)
         decrypted_pass = openssl_decrypt.stdout.decode('utf-8').rstrip()
         salt = crypt.mksalt(crypt.METHOD_SHA512)
@@ -45,8 +46,9 @@ for user in cloud_config.get('Users'):
         print('Adding SSH key')
         keys_path = os.path.expanduser('~{}/.ssh'.format(user['Name']))
         os.makedirs(keys_path, exist_ok=True)
+        ssh_key = ''.join(user['SshKey']) if isinstance(user['SshKey'], list) else user['SshKey']
         with open('{}/authorized_keys'.format(keys_path), 'a') as f:
-            f.write('\n'.join(user['SshKey']))
+            f.write(ssh_key)
 
     if user.get('Sudo'):
         print('Adding sudoers config')
