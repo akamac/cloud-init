@@ -4,6 +4,7 @@ from tools import run
 import os
 import glob
 import sys
+import time
 
 DEFAULT_FILE_SYSTEM = 'ext4'
 
@@ -27,6 +28,7 @@ for vm_disk, config_disk in zip(vm_disks, config_disks):
     else:
         print('Creating partition on /dev/{}'.format(device))
         run('parted --script /dev/{} mklabel gpt mkpart primary 2048KiB 100%'.format(device), fail=True)
+        time.sleep(1)
 
         file_system = config_disk['FileSystem'] if config_disk.get('FileSystem') else DEFAULT_FILE_SYSTEM
         label = config_disk.get('Label')
