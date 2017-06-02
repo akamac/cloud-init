@@ -23,7 +23,7 @@ def main():
 
     if args.set_state is not None:
         with open(state_path, 'w') as state:
-            state.write(args.set_state)
+            state.write(str(args.set_state))
         return
 
     print('Starting cloud-init')

@@ -62,6 +62,7 @@ iface {name} inet static
     except KeyError:
         print('No NIC with MAC {}. Skipping..'.format(nic['Mac']))
 
+content += '\n'
 print('Updating /etc/network/interfaces')
 with open('/etc/network/interfaces', 'w') as f:
     f.write(content)

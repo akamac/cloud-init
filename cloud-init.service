@@ -1,18 +1,18 @@
 [Unit]
 Description=Early guest initialization
 Documentation=https://github.com/akamac/cloud-init
+Requires=system.slice sysinit.target
+Wants=ssh.service network-online.target
+Conflicts=shutdown.target
+Before=network-online.target systemd-user-sessions.service ssh.service shutdown.target
+After=system.slice systemd-journald.socket networking.service sysinit.target basic.target
 
 [Service]
 Type=oneshot
 Restart=no
 #ExecStart=/usr/bin/python3 -m cloudinit
-ExecStart=cloud-init
+ExecStart=/usr/local/bin/cloud-init
 StandardOutput=journal+console
 
 [Install]
 WantedBy=multi-user.target
-Requires=system.slice sysinit.target
-Wants=ssh.service network-online.target
-Before=network-online.target systemd-user-sessions.service ssh.service shutdown.target
-After=system.slice systemd-journald.socket networking.service sysinit.target basic.target
-Conflicts=shutdown.target
