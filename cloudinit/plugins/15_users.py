@@ -1,5 +1,6 @@
 from tools import run
 import os
+import shutil
 import crypt
 import grp
 import pwd
@@ -45,13 +46,18 @@ for user in cloud_config.get('Users'):
     if user.get('SshKey'):
         print('Adding SSH key')
         keys_path = os.path.expanduser('~{}/.ssh'.format(user['Name']))
-        os.makedirs(keys_path, exist_ok=True)
+        os.makedirs(keys_path, mode=0o755, exist_ok=True)
+        shutil.chown(keys_path, user=user['Name'], group=user['Name'])
         ssh_key = ''.join(user['SshKey']) if isinstance(user['SshKey'], list) else user['SshKey']
-        with open('{}/authorized_keys'.format(keys_path), 'a') as f:
+        authorized_keys_path = '{}/authorized_keys'.format(keys_path)
+        with open(authorized_keys_path, 'a') as f:
             f.write(ssh_key)
+        os.chmod(authorized_keys_path, 0o644)
+        shutil.chown(authorized_keys_path, user=user['Name'], group=user['Name'])
 
     if user.get('Sudo'):
         print('Adding sudoers config')
-        os.makedirs('/etc/sudoers.d/', exist_ok=True)
+        os.makedirs('/etc/sudoers.d/', mode=0o750, exist_ok=True)
         with open('/etc/sudoers.d/{}'.format(user['Name']), 'w') as sudoers:
             sudoers.write('{} {}'.format(user['Name'], user['Sudo']))
+        os.chmod('/etc/sudoers.d/{}'.format(user['Name']), 0o440)
