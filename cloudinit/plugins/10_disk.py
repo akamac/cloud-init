@@ -44,10 +44,10 @@ for vm_disk, config_disk in zip(vm_disks, config_disks):
         else:
             sys.exit('Not supported file system')
 
-        print('Add {} to fstab'.format(label))
+        print('Adding {} to fstab'.format(label))
         os.makedirs(mount_point, exist_ok=True)
         with open('/etc/fstab', 'a') as fstab:
             fstab.write('\nLABEL={0}  {1}  {2}  defaults  0  0\n'.format(label, config_disk['MountPoint'], file_system))
 
-        print('Mount {}'.format(label))
+        print('Mounting {}'.format(label))
         run('mount -a', fail=True)
