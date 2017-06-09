@@ -13,14 +13,15 @@ groups = [g.gr_name for g in grp.getgrall()]
 users = [p.pw_name for p in pwd.getpwall()]
 
 for user in cloud_config.get('Users'):
-    for group in user.get('Groups'):
-        # if group not in groups.stdout.split():
-        if group not in groups:
-            groupadd_cmd = 'groupadd '
-            if user.get('System'):
-                groupadd_cmd += '--system '
-            print('Creating missing group: {}'.format(group))
-            run(groupadd_cmd + group, fail=True)
+    if user.get('Groups'):
+        for group in user.get('Groups'):
+            # if group not in groups.stdout.split():
+            if group not in groups:
+                groupadd_cmd = 'groupadd '
+                if user.get('System'):
+                    groupadd_cmd += '--system '
+                print('Creating missing group: {}'.format(group))
+                run(groupadd_cmd + group, fail=True)
 
     if user['Name'] not in users:
         adduser_cmd = 'adduser --disabled-password --gecos "" '
@@ -29,9 +30,10 @@ for user in cloud_config.get('Users'):
         print('Creating user {}'.format(user['Name']))
         run(adduser_cmd + user['Name'], fail=True)
 
-    for group in user.get('Groups'):
-        print('Adding user to group {}'.format(group))
-        run('adduser {} {}'.format(user['Name'], group))
+    if user.get('Groups'):
+        for group in user.get('Groups'):
+            print('Adding user to group {}'.format(group))
+            run('adduser {} {}'.format(user['Name'], group))
 
     if user.get('Password'):
         print('Setting password')

@@ -39,7 +39,7 @@ def main():
                     cloud_config = json.loads(f.read())
                 # remove passwords before dumping to disk
                 shutil.copy('/media/cdrom/cloud-config.json', os.path.join(WORKING_DIR, '_cloud-config.json'))
-                run('eject -v')
+                run('eject')
                 found = True
             except:
                 run('umount /media/cdrom')
