@@ -30,10 +30,8 @@ for vm_disk, config_disk in zip(vm_disks, config_disks):
         run('parted --script /dev/{} mklabel gpt mkpart primary 2048KiB 100%'.format(device), fail=True)
         time.sleep(1)
 
-        file_system = config_disk['FileSystem'] if config_disk.get('FileSystem') else DEFAULT_FILE_SYSTEM
-        label = config_disk.get('Label')
-        if not label:
-            label = os.path.basename(mount_point)
+        file_system = config_disk.get('FileSystem', DEFAULT_FILE_SYSTEM)
+        label = config_disk.get('Label', os.path.basename(mount_point))
 
         print('Creating and mounting file system on partition /dev/{}1'.format(device))
         if file_system == 'ext4':
