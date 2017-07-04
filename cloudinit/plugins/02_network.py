@@ -5,7 +5,8 @@ import os
 import ipaddress
 import re
 
-dns_search_list = [cloud_config['Domain']['Name']].extend(cloud_config['DNS'].get('DomainSearch', []))
+dns_search_list = [cloud_config['Domain']['Name']]
+dns_search_list.extend(cloud_config['DNS'].get('DomainSearch', []))
 print('DNS search list: {}'.format(dns_search_list))
 
 print('Reading interfaces from /sys/class/net/')

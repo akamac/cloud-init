@@ -7,10 +7,12 @@ from glob import glob
 import shutil
 import runpy
 import argparse
+from pkg_resources import get_distribution
 
 from .plugins.tools import run
 
 WORKING_DIR = '/var/lib/cloud-init'
+# __version__ = get_distribution('cloudinit').version
 
 
 def main():
@@ -19,7 +21,12 @@ def main():
 
     parser = argparse.ArgumentParser(description='framework for early Ubuntu/Debian guest initialization')
     parser.add_argument('--set-state', type=int, help='set current execution step')
+    parser.add_argument('--version', action='store_true', help='print version')
     args = parser.parse_args()
+
+    if args.version:
+        print(get_distribution('cloudinit').version)
+        return
 
     if args.set_state is not None:
         with open(state_path, 'w') as state:
