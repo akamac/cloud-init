@@ -45,9 +45,11 @@ for user in cloud_config.get('Users', []):
 
     if user.get('SshKey'):
         print('Adding SSH key')
-        keys_path = os.path.expanduser('~{}/.ssh'.format(user['Name']))
+        home_path = os.path.expanduser('~{}'.format(user['Name']))
+        keys_path = '{}/.ssh'.format(home_path)
         os.makedirs(keys_path, mode=0o755, exist_ok=True)
-        shutil.chown(keys_path, user=user['Name'], group=user['Name'])
+        for directory in home_path, keys_path:
+            shutil.chown(directory, user=user['Name'], group=user['Name'])
         ssh_key = ''.join(user['SshKey']) if isinstance(user['SshKey'], list) else user['SshKey']
         authorized_keys_path = '{}/authorized_keys'.format(keys_path)
         with open(authorized_keys_path, 'a') as f:
