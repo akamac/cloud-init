@@ -39,6 +39,7 @@ def main():
     print('Searching for cloud-config.json on cd')
     blkid = run('blkid /dev/cdrom')
     if blkid.stdout:
+        os.makedirs('/media/cdrom', mode=0o755, exist_ok=True)
         mount = run('mount /dev/cdrom /media/cdrom')
         if mount.returncode == 0:
             try:
