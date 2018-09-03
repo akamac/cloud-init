@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(name='cloudinit',
-      version='0.3.7',
+      version='0.3.8',
       description='Framework for early Linux guest initialization',
       url='https://github.com/akamac/cloud-init',
       author='Alexey Miasoedov',

@@ -38,7 +38,7 @@ for user in cloud_config.get('Users', []):
         submitted_password = ''.join(user['Password']) if isinstance(user['Password'], list) else user['Password']
         encrypted = base64.b64decode(submitted_password)
         openssl_decrypt = run('openssl rsautl -inkey {}/private.pem -decrypt'.format(WORKING_DIR), stdin=encrypted, suppress_output=True)
-        decrypted_pass = openssl_decrypt.stdout.decode('utf-8').rstrip()
+        decrypted_pass = openssl_decrypt.stdout.decode().rstrip()
         salt = crypt.mksalt(crypt.METHOD_SHA512)
         password = crypt.crypt(decrypted_pass, salt)
         run('usermod --password {} {}'.format(password, user['Name']), fail=True)

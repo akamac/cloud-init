@@ -12,9 +12,9 @@ from collections import namedtuple
     # res = subprocess.run(cmd, shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, input=stdin)
     # if res.stdout and not suppress_output:
     ##     print(res.stdout)
-    #     print(res.stdout.decode('utf-8'))
+    #     print(res.stdout.decode())
     # if res.stderr:
-    #     print(res.stderr.decode('utf-8'), file=sys.stderr)
+    #     print(res.stderr.decode(), file=sys.stderr)
     # if res.returncode and fail:
     #     sys.exit(1)
     # return res
@@ -29,9 +29,9 @@ def run(cmd, stdin=None, fail=False, suppress_output=False):
 
     if stdout and not suppress_output:
         # print(res.stdout)
-        print(stdout.decode('utf-8'))
+        print(stdout.decode())
     if stderr:
-        print(stderr.decode('utf-8'), file=sys.stderr)
+        print(stderr.decode(), file=sys.stderr)
     if popen.returncode and fail:
         sys.exit(1)
     CompletedProcess = namedtuple('CompletedProcess', 'stdout stderr returncode')

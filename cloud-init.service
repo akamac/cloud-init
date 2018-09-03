@@ -1,18 +1,20 @@
 [Unit]
 Description=Early guest initialization
 Documentation=https://github.com/akamac/cloud-init
-Requires=system.slice sysinit.target
-Wants=ssh.service network-online.target
-Conflicts=shutdown.target
-Before=network-online.target systemd-user-sessions.service ssh.service shutdown.target
-After=system.slice systemd-journald.socket networking.service sysinit.target basic.target
+DefaultDependencies=no
+Before=sysinit.target network-pre.target
+Wants=network-pre.target
+After=systemd-remount-fs.service
+ConditionPathIsReadWrite=/etc
 
 [Service]
 Type=oneshot
 Restart=no
+Environment=RUNLEVEL=1
 #ExecStart=/usr/bin/python3 -m cloudinit
 ExecStart=/usr/local/bin/cloud-init
 StandardOutput=journal+console
 
 [Install]
-WantedBy=multi-user.target
+RequiredBy=network.target
+#WantedBy=sysinit.target

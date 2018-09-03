@@ -5,15 +5,37 @@ import os
 import ipaddress
 import re
 
+hostname = cloud_config['HostName'].lower()
+domain = cloud_config['Domain']['Name']
+fqdn = '.'.join([hostname, domain])
+
 dns_search_list = [cloud_config['Domain']['Name']]
 dns_search_list.extend(cloud_config['DNS'].get('DomainSearch', []))
 print('DNS search list: {}'.format(dns_search_list))
+
+
+def update_hosts(ip):
+    current_hostname = os.uname().nodename
+    if current_hostname != hostname:
+        print('Setting hostname {}'.format(hostname))
+        # hostname is initialized early on boot from initramfs, hostnamectl is not available when unit is started
+        run('sysctl -w kernel.hostname="{}"'.format(hostname))
+        with open('/etc/hostname', 'w') as f:
+            f.write(hostname)
+    with open('/etc/hosts') as f:
+        hosts_content = f.read()
+        pattern = r'^[0-9.]{{7,15}}.*{}$'.format(current_hostname)
+        hosts_content = re.sub(pattern, '{}\t{}\t{}'.format(ip, fqdn, hostname), hosts_content, flags=re.MULTILINE)
+    print('Updating /etc/hosts')
+    with open('/etc/hosts', 'w') as f:
+        f.write(hosts_content)
+
 
 print('Reading interfaces from /sys/class/net/')
 interfaces = {}
 for interface in os.listdir('/sys/class/net/'):
     with open('/sys/class/net/{}/address'.format(interface)) as f:
-        mac = f.read().rstrip('\n')
+        mac = f.read().rstrip()
         interfaces.update({mac: interface})
 
 print('Checking if network is managed by systemd')
@@ -39,8 +61,8 @@ if networkd_status.stdout.rstrip() in [b'enabled', b'enabled-runtime']:
                 f.write(nic_config)
         except KeyError:
             print('No NIC with MAC {}. Skipping..'.format(nic['Mac']))
-    print('Restart networking')
-    run('systemctl restart systemd-networkd')
+    # print('Restart networking')
+    # run('systemctl restart systemd-networkd')
 else:
     print('Generating /etc/network/interfaces')
     content = '''auto lo
@@ -73,15 +95,7 @@ iface {name} inet static
            nameservers=' '.join(cloud_config['DNS']['Servers']),
            dns_search_list=' '.join(dns_search_list))
 
-                    fqdn = os.uname().nodename
-                    hostname = fqdn.split('.')[0]
-                    with open('/etc/hosts') as f:
-                        hosts_content = f.read()
-                        pattern = r'[0-9.]{{7,15}}(\s+{}\s+{})'.format(fqdn, hostname)
-                        hosts_content = re.sub(pattern, str(interface.ip) + r'\1', hosts_content)
-                    print('Updating /etc/hosts')
-                    with open('/etc/hosts', 'w') as f:
-                        f.write(hosts_content)
+                    update_hosts(str(interface.ip))
 
             content += nic_config
         except KeyError:
@@ -92,6 +106,6 @@ iface {name} inet static
     with open('/etc/network/interfaces', 'w') as f:
         f.write(content)
 
-    print('Restart networking')
-    run('ip address flush scope global')
-    run('systemctl restart networking')
+    # print('Restart networking')
+    # run('ip address flush scope global')
+    # run('systemctl restart networking')
