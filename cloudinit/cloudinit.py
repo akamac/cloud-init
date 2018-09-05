@@ -11,7 +11,7 @@ from pkg_resources import get_distribution
 
 from .plugins.tools import run
 
-WORKING_DIR = '/var/lib/cloud-init'
+WORKING_DIR = '/usr/lib/cloud-init'
 # __version__ = get_distribution('cloudinit').version
 
 
