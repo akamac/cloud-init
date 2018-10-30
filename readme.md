@@ -8,7 +8,6 @@ Compared to original cloud-init project it's more lightweight, but with a limite
 Python >=3.5 is required!
 
 List of bundled plugins:
-- 01_hostname.py
 - 02_network.py
 - 10_disk.py
 - 15_user.py
