@@ -16,15 +16,15 @@
   "NIC": [
     {
       "Ip": [
-        "10.9.2.105/24",
-        "10.9.2.106/24"
+        "10.8.2.105/24",
+        "10.8.2.106/24"
       ],
       "Mac": "00:15:5d:2e:20:16",
-      "Gw": "10.9.2.1"
+      "Gw": "10.8.2.1"
     },
     {
       "Ip": [
-        "10.250.157.10/24"
+        "10.212.157.10/24"
       ],
       "Mac": "00:50:56:96:1d:28"
     }
@@ -35,11 +35,11 @@
       "server.net"
     ],
     "Servers": [
-      "8.8.8.8"
+      "1.1.1.1"
     ]
   },
   "Domain": {
-    "Name": "serverpod.net"
+    "Name": "local.net"
   },
   "Users": [
     {
@@ -48,19 +48,7 @@
         "System": false,
         "Password": "encrypted",
         "Sudo": "ALL=(ALL) NOPASSWD:ALL",
-        "SshKey": [
-            "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDAVbC/lowrfIEUZMSFgp1FeVhmlDhWfudCwZ0euEz",
-            "KTZdQxXfMc75DOVAs/5rNNZy6jafwTOSF/2xxzX4KpJ+j/7CyLbw67+F/JdHmDlx8lENwnK4FDMO8d1",
-            "4jdFuglvfz+bxS7EtTHWNKdE3nYY7/j/JqRYrCqKRwbQbZu87qtf+EV7AVtfVrhy1rVRbZalERnUWAV",
-            "xhkxtLdb/IToBXZfRs1PWQ+Mbv8gTBvNghMYiI/fMIzQ6N4BAPQBgH70PyoyvrdQGAmjol2HAiwoqWs",
-            "5YZS/1Mz+Qu82kq42hlFmCnAtF+qJYuweI8B5jsIBHq4FVIyJBn4c8a3OCWfrjKMs4aqSzVFvpDXqlQ",
-            "k70K7pornOAykAgLJzs8ilPEZR2Qcvx3nUIKHcQX/PYldyHcLb9ya2OcMG6kk9bhroS/76BpaEidt22",
-            "VkC56gxAvp0dF8/ZB4+si+3T+AC7BKMjdpAxFJoWxCgqWqoOF00l3qoqajxvoAwhoI3VRauEOCRatgf",
-            "nhqcvj3DqdvaT94dYOAImGl134WRkPHpmHleVzQ9WeQqeR8tvrGad46AwfIrxHwx7ZHfwAeTyH+okI2",
-            "I/k7gF2WmHEuaYUf0iDbRoutIeI6LTdg11sC3wj6twE3tjbF8df04+xP4hshgb/CHjVuGdrui7lLWhx",
-            "fq1KiVHF98w== corporate@company.com"
-        ]
-
+        "SshKey": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOW9lsiHoqOH9+rO9RAg0JR2R9eYxCcJAfk67PJS1TGM corporate@company.com"
     }
   ]
 }

@@ -5,7 +5,7 @@ similar to [CloudInit](http://cloudinit.readthedocs.io/en/latest/).
 In VMware and Hyper-V environments it replaces guest customization with
 more flexible and extensible mechanism.
 Compared to original cloud-init project it's more lightweight, but with a limited set of features, though extensible through plugins.
-Python >=3.5 is required!
+Python >=3.4 is required.
 
 List of bundled plugins:
 - 02_network.py
@@ -34,15 +34,15 @@ Currently the only supported config source is cloud-config.json file stored on c
   "NIC": [
     {
       "Ip": [
-        "10.9.3.105/24",
-        "10.9.3.106/24"
+        "10.8.3.105/24",
+        "10.8.3.106/24"
       ],
       "Mac": "00:15:5d:2e:21:16",
-      "Gw": "10.9.3.1"
+      "Gw": "10.8.3.1"
     },
     {
       "Ip": [
-        "10.250.157.10/24"
+        "10.212.157.10/24"
       ],
       "Mac": "00:50:56:97:1d:28"
     }
@@ -53,7 +53,7 @@ Currently the only supported config source is cloud-config.json file stored on c
       "company.net"
     ],
     "Servers": [
-      "8.8.8.8"
+      "1.1.1.1"
     ]
   },
   "Domain": {
@@ -61,35 +61,22 @@ Currently the only supported config source is cloud-config.json file stored on c
   },
   "Users": [
     {
-        "Name": "localadmin",
-        "Groups": [ "admin" ],
-        "System": false,
-        "Password": [
-            "PV+j7zZWctl3HvccGzJUetBblhV5qOjhaPdlvr/FFSZEWBmyCoYCB6A0V0iYyqIU",
-            "4JrU7pljAnzvcvXK1eh4PD4yr6S9wj/7bBynxsYGH2YlYI4uDwv5sFUP8p2kwNAd",
-            "qafVuuItZFWzNDeg/Ta/w+UJbXjsXn7+PfAc5wo1sMX9tgUV7G6FJh7kVwzxl7Ax",
-            "/Oegu0a94fUMSZJaU8cJJ4JFUHpopmtSkOQyVxykHPKYCX8njdaabnRwhzc0jugU",
-            "+l5pCx0ljpEJbkVtfbOHij5IZFD0AKsoWJg1Uzmfjs7hwcFQmDaXUajBK3Fq5XNs",
-            "WiQIKnXzk5ppTxJEL66KtQ=="
-        ],
-        "Sudo": "ALL=(ALL) NOPASSWD:ALL",
-        "SshKey": [
-            "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDAVbC/lowrfIEUZMSFgp1FeVhmlDhWfudCwZ0euEz",
-            "KTZdQxXfMc75DOVAs/5rNNZy6jafwTOSF/2xxzX4KpJ+j/7CyLbw67+F/JdHmDlx8lENwnK4FDMO8d1",
-            "4jdFuglvfz+bxS7EtTHWNKdE3nYY7/j/JqRYrCqKRwbQbZu87qtf+EV7AVtfVrhy1rVRbZalERnUWAV",
-            "xhkxtLdb/IToBXZfRs1PWQ+Mbv8gTBvNghMYiI/fMIzQ6N4BAPQBgH70PyoyvrdQGAmjol2HAiwoqWs",
-            "5YZS/1Mz+Qu82kq42hlFmCnAtF+qJYuweI8B5jsIBHq4FVIyJBn4c8a3OCWfrjKMs4aqSzVFvpDXqlQ",
-            "k70K7pornOAykAgLJzs8ilPEZR2Qcvx3nUIKHcQX/PYldyHcLb9ya2OcMG6kk9bhroS/76BpaEidt22",
-            "VkC56gxAvp0dF8/ZB4+si+3T+AC7BKMjdpAxFJoWxCgqWqoOF00l3qoqajxvoAwhoI3VRauEOCRatgf",
-            "nhqcvj3DqdvaT94dYOAImGl134WRkPHpmHleVzQ9WeQqeR8tvrGad46AwfIrxHwx7ZHfwAeTyH+okI2",
-            "I/k7gF2WmHEuaYUf0iDbRoutIeI6LTdg11sC3wj6twE3tjbF8df04+xP4hshgb/CHjVuGdrui7lLWhx",
-            "fq1KiVHF98w== corporate@company.com"
-        ]
-         
+      "Name": "localadmin",
+      "Groups": [ "admin" ],
+      "System": false,
+      "Password": [
+        "PV+j7zZWctl3HvccGzJUetBblhV5qOjhaPdlvr/FFSZEWBmyCoYCB6A0V0iYyqIU",
+        "4JrU7pljAnzvcvXK1eh4PD4yr6S9wj/7bBynxsYGH2YlYI4uDwv5sFUP8p2kwNAd",
+        "qafVuuItZFWzNDeg/Ta/w+UJbXjsXn7+PfAc5wo1sMX8tgUV7G6FJh7kVwzxl7Ax",
+        "/Oegu0a94fUMSZJaU8cJJ4JFUHpopmtSkOQyVxykHPKYCX8njdaabnRwhzc0jugU",
+        "+l5pCx0ljpEJbkVtfbOHij5IZFD0AKsoWJg1Uzmfjs7hwcFQmDaXUajBK3Fq5XNs",
+        "WiQIKnXzk5ppTxJEL66KtQ=="
+      ],
+      "Sudo": "ALL=(ALL) NOPASSWD:ALL",
+      "SshKey": "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOW9lsiHoqOH9+rO9RAg0JR2R9eYxCcJAfk67PJS1TGM corporate@company.com"
     }
   ]
 }
-
 ```
 
 How to install and enable to run on startup:
@@ -101,20 +88,19 @@ systemctl daemon-reload
 systemctl enable cloud-init
 ```
 
-Put unencrypted private RSA key (private.pem) to /var/lib/cloud-init so that cloud-init can decrypt user passwords, supplied via cloud-config.json  
+Put unencrypted private RSA key (private.pem) to `/usr/lib/cloud-init`, so that `cloud-init` can decrypt user passwords supplied via `cloud-config.json`  
 
-Script logs are available via:
-`journalctl -u cloud-init.service`
+To see logs run `journalctl -u cloud-init.service`
 
 Few things to know:
 - after successful run module disables itself 
 - already partitioned disks are not touched
 - disk plugin supports only ext4 filesystem at the moment
-- json used for configuration is saved locally and can be checked at `/var/lib/cloud-init/_cloud-config.json` (passwords are cleared)
+- json used for configuration is saved locally and can be checked at `/usr/lib/cloud-init/_cloud-config.json` (passwords are cleared)
 
 The module targets Debian-based installations and has been tested on:
-- Debian 8 Jessie
-- Ubuntu 16.04 LTS Xenial
+- Debian 8 Jessie / 9 Stretch
+- Ubuntu 16.04 LTS Xenial / 18.04 LTS Bionic
 
 
 ## For developers
@@ -125,8 +111,8 @@ Also you can use bundled `from tools import run` function to execute arbitrary b
 
 If you need to restart system after plugin execution, set `reboot = True` before exiting the script,
 so the module can suspend execution of the next plugin
-and resume after system has been restarted. To handle reboots the module keeps
-a *state* file in `/var/lib/cloud-init/` directory where it stores a current execution step.
+and resume after the system has been restarted. To handle reboots the module keeps
+a *state* file in `/usr/lib/cloud-init/` directory where it stores the current execution step.
 To reset the state run `cloud-init --set-state 0`
 
 ## openssl rsautl
