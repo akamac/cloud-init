@@ -83,7 +83,7 @@ How to install and enable to run on startup:
 ```
 sudo -H pip3 install git+https://github.com/akamac/cloud-init.git
 cd /etc/systemd/system/
-wget https://github.com/akamac/cloud-init/raw/master/cloudinit/cloud-init.service
+wget https://raw.githubusercontent.com/akamac/cloud-init/master/cloud-init.service
 systemctl daemon-reload
 systemctl enable cloud-init
 ```
